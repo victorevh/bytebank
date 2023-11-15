@@ -1,42 +1,39 @@
-let balance = 3000;
-
-const balanceElement = document.querySelector(".saldo-valor .valor");
-
-balanceElement.textContent = balance.toString();
-
-const formElement = document.querySelector(".block-nova-transacao form");
+var balance = 3000;
+var balanceElement = document.querySelector(".saldo-valor .valor");
+if (balanceElement !== null) {
+    balanceElement.textContent = balance.toString();
+}
+var formElement = document.querySelector(".block-nova-transacao form");
 formElement.addEventListener("submit", function (event) {
     event.preventDefault();
     if (!formElement.checkValidity()) {
         alert("Por favor, preencha todos os campos da transação");
         return;
     }
-
-    const typeTransactionInput = formElement.querySelector("#tipoTransacao");
-    const valueInput = formElement.querySelector("#valor");
-    const dateInput = formElement.querySelector("#data");
-
-    let typeTransaction = typeTransactionInput.value;
-    let value = valueInput.value;
-    let date = dateInput.value;
-
+    var typeTransactionInput = formElement.querySelector("#tipoTransacao");
+    var valueInput = formElement.querySelector("#valor");
+    var dateInput = formElement.querySelector("#data");
+    var typeTransaction = typeTransactionInput.value;
+    var value = valueInput.valueAsNumber;
+    var date = new Date(dateInput.value);
     if (typeTransaction === "Depósito") {
         balance += value;
-    } else if (typeTransaction === "Transferência" || typeTransaction === "Pagamento de Boleto") {
+    }
+    else if (typeTransaction === "Transferência" || typeTransaction === "Pagamento de Boleto") {
         balance -= value;
-    } else {
+    }
+    else {
         alert("Tipo de Transação é inválido!");
         return;
     }
-
-    balanceElement.textContent = balance;
-
-    const newTransaction = {
+    if (balanceElement !== null) {
+        balanceElement.textContent = balance.toString();
+    }
+    var newTransaction = {
         typeTransaction: typeTransaction,
         value: value,
         date: date
-    }
-
-    console.log(newTransaction)
+    };
+    console.log(newTransaction);
     formElement.reset();
 });
