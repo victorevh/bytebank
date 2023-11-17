@@ -1,5 +1,5 @@
 
-// Primitives Types
+/* Primitives Types
 let balanceMoney: number = 3000;
 let namePerson: string = "João";
 let isActive: boolean = true;
@@ -29,3 +29,4 @@ const newTransaction: Transaction = {
     date: new Date(),
     value: 0
 }
+*/

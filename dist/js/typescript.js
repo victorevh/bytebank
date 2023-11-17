@@ -1,21 +1,31 @@
-// Primitives Types
-let balanceMoney = 3000;
-let namePerson = "João";
-let isActive = true;
-let any = "any";
+/* Primitives Types
+let balanceMoney: number = 3000;
+let namePerson: string = "João";
+let isActive: boolean = true;
+let any: any = "any";
 any = 1;
+
 // Arrays
-const list = [];
+const list: number[] = [];
 list.push(22, 45, 22, 34.5);
+
+// Types personalizados (Alias)
+type Transaction = {
+    typeTransaction: typeTransaction,
+    date: Date,
+    value: number
+}
+
 // Enum
-var typeTransaction;
-(function (typeTransaction) {
-    typeTransaction["DEPOSIT"] = "Dep\u00F3sito";
-    typeTransaction["TRANSFER"] = "Transfer\u00EAncia";
-    typeTransaction["PAYMENT_BOLETO"] = "Pagamento de Boleto";
-})(typeTransaction || (typeTransaction = {}));
-const newTransaction = {
+enum typeTransaction {
+    DEPOSIT = "Depósito",
+    TRANSFER = "Transferência",
+    PAYMENT_BOLETO = "Pagamento de Boleto"
+}
+
+const newTransaction: Transaction = {
     typeTransaction: typeTransaction.DEPOSIT,
     date: new Date(),
     value: 0
-};
+}
+*/ 

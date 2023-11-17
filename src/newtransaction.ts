@@ -1,11 +1,3 @@
-let balance = 3000;
-
-const balanceElement = document.querySelector(".saldo-valor .valor") as HTMLElement;
-
-if (balanceElement !== null) {
-    balanceElement.textContent = balance.toString();
-}
-
 const formElement = document.querySelector(".block-nova-transacao form") as HTMLFormElement;
 formElement.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -18,13 +10,13 @@ formElement.addEventListener("submit", function (event) {
     const valueInput = formElement.querySelector("#valor") as HTMLInputElement;
     const dateInput = formElement.querySelector("#data") as HTMLInputElement;
 
-    let typeTransaction: string = typeTransactionInput.value;
+    let typeTransaction: typeTransactionEnum = typeTransactionInput.value as typeTransactionEnum;
     let value: number = valueInput.valueAsNumber;
     let date: Date = new Date(dateInput.value);
 
-    if (typeTransaction === "Depósito") {
+    if (typeTransaction === typeTransactionEnum.DEPOSIT) {
         balance += value;
-    } else if (typeTransaction === "Transferência" || typeTransaction === "Pagamento de Boleto") {
+    } else if (typeTransaction === typeTransactionEnum.TRANSFER || typeTransaction === typeTransactionEnum.PAYMENT_BOLETO) {
         balance -= value;
     } else {
         alert("Tipo de Transação é inválido!");
@@ -35,7 +27,7 @@ formElement.addEventListener("submit", function (event) {
         balanceElement.textContent = balance.toString();
     }
 
-    const newTransaction = {
+    const newTransaction: Transaction = {
         typeTransaction: typeTransaction,
         value: value,
         date: date
