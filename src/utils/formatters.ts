@@ -1,8 +1,10 @@
-function coinFormat(value: number): string {
+import { DateFormat } from "../types/FormatDate.js";
+
+export function coinFormat(value: number): string {
     return value.toLocaleString("pt-br", { currency: "BRL", style: "currency"});
 }
 
-function dateFormat(date: Date, format: DateFormat = DateFormat.DEFAULT): string {
+export function dateFormat(date: Date, format: DateFormat = DateFormat.DEFAULT): string {
     if (format === DateFormat.DAY_WEEK_DAY_MONTH_YEAR) {
         return date.toLocaleDateString("pt-br", {
             weekday: "long", 

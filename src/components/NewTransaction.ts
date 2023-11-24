@@ -1,3 +1,8 @@
+import Account from "../types/Account.js";
+import { TypeTransaction } from "../types/Transaction.js";
+import { Transaction } from "../types/TypeTransaction.js";
+import BalanceComponent from "./Balance.js";
+
 const formElement = document.querySelector(".block-nova-transacao form") as HTMLFormElement;
 formElement.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -10,22 +15,9 @@ formElement.addEventListener("submit", function (event) {
     const valueInput = formElement.querySelector("#valor") as HTMLInputElement;
     const dateInput = formElement.querySelector("#data") as HTMLInputElement;
 
-    let typeTransaction: typeTransactionEnum = typeTransactionInput.value as typeTransactionEnum;
+    let typeTransaction: TypeTransaction = typeTransactionInput.value as TypeTransaction;
     let value: number = valueInput.valueAsNumber;
     let date: Date = new Date(dateInput.value);
-
-    if (typeTransaction === typeTransactionEnum.DEPOSIT) {
-        balance += value;
-    } else if (typeTransaction === typeTransactionEnum.TRANSFER || typeTransaction === typeTransactionEnum.PAYMENT_BOLETO) {
-        balance -= value;
-    } else {
-        alert("Tipo de Transação é inválido!");
-        return;
-    }
-
-    if (balanceElement !== null) {
-        balanceElement.textContent = coinFormat(balance);
-    }
 
     const newTransaction: Transaction = {
         typeTransaction: typeTransaction,
@@ -33,6 +25,8 @@ formElement.addEventListener("submit", function (event) {
         date: date
     }
 
-    console.log(newTransaction)
+    Account.transactionRegistry(newTransaction);
+
+    BalanceComponent.update();
     formElement.reset();
 });
