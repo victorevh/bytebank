@@ -24,7 +24,7 @@ formElement.addEventListener("submit", function (event) {
     }
 
     if (balanceElement !== null) {
-        balanceElement.textContent = balance.toString();
+        balanceElement.textContent = coinFormat(balance);
     }
 
     const newTransaction: Transaction = {
