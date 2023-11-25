@@ -1,5 +1,5 @@
 import Account from "../types/Account.js";
-import BalanceComponent from "./Balance.js";
+import BalanceComponent from "./balance-component.js";
 const formElement = document.querySelector(".block-nova-transacao form");
 formElement.addEventListener("submit", function (event) {
     try {
@@ -13,7 +13,7 @@ formElement.addEventListener("submit", function (event) {
         const dateInput = formElement.querySelector("#data");
         let typeTransaction = typeTransactionInput.value;
         let value = valueInput.valueAsNumber;
-        let date = new Date(dateInput.value);
+        let date = new Date(dateInput.value + " 00:00:00");
         const newTransaction = {
             typeTransaction: typeTransaction,
             value: value,
