@@ -1,6 +1,6 @@
-import { TypeTransaction } from "./Transaction";
-import { TransactionGroup } from "./TransactionGroup";
-import { Transaction } from "./TypeTransaction";
+import { TypeTransaction } from "./Transaction.js";
+import { TransactionGroup } from "./TransactionGroup.js";
+import { Transaction } from "./TypeTransaction.js";
 
 export class Account {
   static transactionRegistry(newTransaction: Transaction) {
