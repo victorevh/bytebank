@@ -1,20 +1,18 @@
 import { TypeTransaction } from "./Transaction.js";
 import { TransactionGroup } from "./TransactionGroup.js";
 import { Transaction } from "./TypeTransaction.js";
+import { Storage } from "./Storage.js";
 
 export class Account {
   protected name: string;
-  protected balance: number = JSON.parse(localStorage.getItem("balance")) || 0;
+  protected balance: number = Storage.get("balance") || 0;
   private transactions: Transaction[] =
-    JSON.parse(
-      localStorage.getItem("transactions"),
-      (key: string, value: any) => {
-        if (key === "date") {
-          return new Date(value);
-        }
-        return value;
+    Storage.get("transactions", (key: string, value: any) => {
+      if (key === "date") {
+        return new Date(value);
       }
-    ) || [];
+      return value;
+    }) || [];
 
   constructor(name: string) {
     this.name = name;
@@ -72,7 +70,7 @@ export class Account {
     }
 
     this.transactions.push(newTransaction);
-    localStorage.setItem("transactions", JSON.stringify(this.transactions));
+    Storage.save("transactions", JSON.stringify(this.transactions));
   }
 
   debit(value: number): void {
@@ -84,7 +82,7 @@ export class Account {
     }
 
     this.balance -= value;
-    localStorage.setItem("balance", this.balance.toString());
+    Storage.save("balance", this.balance.toString());
   }
 
   deposit(value: number): void {
@@ -93,7 +91,7 @@ export class Account {
     }
 
     this.balance += value;
-    localStorage.setItem("balance", this.balance.toString());
+    Storage.save("balance", this.balance.toString());
   }
 }
 

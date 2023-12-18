@@ -1,14 +1,18 @@
 import { TypeTransaction } from "./Transaction.js";
+import { Storage } from "./Storage.js";
 export class Account {
     constructor(name) {
-        this.balance = JSON.parse(localStorage.getItem("balance")) || 0;
-        this.transactions = JSON.parse(localStorage.getItem("transactions"), (key, value) => {
+        this.balance = Storage.get("balance") || 0;
+        this.transactions = Storage.get("transactions", (key, value) => {
             if (key === "date") {
                 return new Date(value);
             }
             return value;
         }) || [];
         this.name = name;
+    }
+    getOwner() {
+        return this.name;
     }
     getBalance() {
         return this.balance;
@@ -47,7 +51,7 @@ export class Account {
             throw new Error("Tipo de Transação é inválido!");
         }
         this.transactions.push(newTransaction);
-        localStorage.setItem("transactions", JSON.stringify(this.transactions));
+        Storage.save("transactions", JSON.stringify(this.transactions));
     }
     debit(value) {
         if (value <= 0) {
@@ -57,14 +61,14 @@ export class Account {
             throw new Error("Saldo insuficiente!");
         }
         this.balance -= value;
-        localStorage.setItem("balance", this.balance.toString());
+        Storage.save("balance", this.balance.toString());
     }
     deposit(value) {
         if (value <= 0) {
             throw new Error("Valor a ser depositado deve ser menor que zero!");
         }
         this.balance += value;
-        localStorage.setItem("balance", this.balance.toString());
+        Storage.save("balance", this.balance.toString());
     }
 }
 const UserAccount = new Account("Victor");
