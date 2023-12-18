@@ -1,4 +1,4 @@
-import * as Account from "../types/Account.js";
+import UserAccount from "../types/Account.js";
 import { DateFormat } from "../types/FormatDate.js";
 import { TransactionGroup } from "../types/TransactionGroup.js";
 import { coinFormat, dateFormat } from "../utils/formatters.js";
@@ -10,7 +10,7 @@ const registryTransactionsExtractElement = document.querySelector(
 extractRenderize();
 function extractRenderize(): void {
   const transactionsGroups: TransactionGroup[] =
-    Account.getTransactionsGroups();
+  UserAccount.getTransactionsGroups();
   registryTransactionsExtractElement.innerHTML = "";
   let registryTransactionsHTML: string = "";
 

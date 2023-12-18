@@ -3,15 +3,6 @@ import { TransactionGroup } from "./TransactionGroup.js";
 import { Transaction } from "./TypeTransaction.js";
 
 export class Account {
-  static transactionRegistry(newTransaction: Transaction) {
-      throw new Error("Method not implemented.");
-  }
-  static getBalance(): number {
-      throw new Error("Method not implemented.");
-  }
-  static getAcessDate(): Date {
-      throw new Error("Method not implemented.");
-  }
   name: string;
   balance: number = JSON.parse(localStorage.getItem("balance")) || 0;
   transactions: Transaction[] =
@@ -102,8 +93,6 @@ export class Account {
   }
 }
 
-export default Account;
+const UserAccount = new Account("Victor")
 
-export function getTransactionsGroups(): TransactionGroup[] {
-    throw new Error("Function not implemented.");
-}
+export default UserAccount;

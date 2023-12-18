@@ -1,4 +1,4 @@
-import { Account } from "../types/Account.js";
+import  UserAccount from "../types/Account.js";
 import { TypeTransaction } from "../types/Transaction.js";
 import { Transaction } from "../types/TypeTransaction.js";
 import BalanceComponent from "./balance-component.js";
@@ -31,7 +31,7 @@ formElement.addEventListener("submit", function (event) {
       date: date,
     };
 
-    Account.transactionRegistry(newTransaction);
+    UserAccount.transactionRegistry(newTransaction);
 
     BalanceComponent.update();
 
