@@ -1,4 +1,4 @@
-import { TypeTransaction } from "./Transaction";
+import { TypeTransaction } from "./Transaction.js";
 export class Account {
     constructor(name) {
         this.balance = JSON.parse(localStorage.getItem("balance")) || 0;
@@ -9,15 +9,6 @@ export class Account {
             return value;
         }) || [];
         this.name = name;
-    }
-    static transactionRegistry(newTransaction) {
-        throw new Error("Method not implemented.");
-    }
-    static getBalance() {
-        throw new Error("Method not implemented.");
-    }
-    static getAcessDate() {
-        throw new Error("Method not implemented.");
     }
     getBalance() {
         return this.balance;
@@ -76,7 +67,5 @@ export class Account {
         localStorage.setItem("balance", this.balance.toString());
     }
 }
-export default Account;
-export function getTransactionsGroups() {
-    throw new Error("Function not implemented.");
-}
+const UserAccount = new Account("Victor");
+export default UserAccount;

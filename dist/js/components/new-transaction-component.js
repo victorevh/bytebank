@@ -1,4 +1,4 @@
-import { Account } from "../types/Account.js";
+import UserAccount from "../types/Account.js";
 import BalanceComponent from "./balance-component.js";
 const formElement = document.querySelector(".block-nova-transacao form");
 formElement.addEventListener("submit", function (event) {
@@ -19,7 +19,7 @@ formElement.addEventListener("submit", function (event) {
             value: value,
             date: date,
         };
-        Account.transactionRegistry(newTransaction);
+        UserAccount.transactionRegistry(newTransaction);
         BalanceComponent.update();
         formElement.reset();
     }
