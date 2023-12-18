@@ -3,9 +3,9 @@ import { TransactionGroup } from "./TransactionGroup.js";
 import { Transaction } from "./TypeTransaction.js";
 
 export class Account {
-  name: string;
-  balance: number = JSON.parse(localStorage.getItem("balance")) || 0;
-  transactions: Transaction[] =
+  protected name: string;
+  protected balance: number = JSON.parse(localStorage.getItem("balance")) || 0;
+  private transactions: Transaction[] =
     JSON.parse(
       localStorage.getItem("transactions"),
       (key: string, value: any) => {
@@ -18,6 +18,10 @@ export class Account {
 
   constructor(name: string) {
     this.name = name;
+  }
+
+  public getOwner() {
+    return this.name;
   }
 
   getBalance() {
@@ -93,6 +97,5 @@ export class Account {
   }
 }
 
-const UserAccount = new Account("Victor")
-
+const UserAccount = new Account("Victor");
 export default UserAccount;
