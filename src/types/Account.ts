@@ -5,9 +5,9 @@ import { Storage } from "./Storage.js";
 
 export class Account {
   protected name: string;
-  protected balance: number = Storage.get("balance") || 0;
+  protected balance: number = Storage.get<number>("balance") || 0;
   private transactions: Transaction[] =
-    Storage.get("transactions", (key: string, value: any) => {
+    Storage.get<Transaction[]>("transactions", (key: string, value: any) => {
       if (key === "date") {
         return new Date(value);
       }
