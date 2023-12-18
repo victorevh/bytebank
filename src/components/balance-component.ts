@@ -1,4 +1,4 @@
-import Account from "../types/Account.js";
+import { Account } from "../types/Account.js";
 import { DateFormat } from "../types/FormatDate.js";
 import { coinFormat, dateFormat } from "../utils/formatters.js";
 

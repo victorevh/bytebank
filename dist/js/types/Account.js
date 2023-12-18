@@ -1,38 +1,33 @@
-import { TypeTransaction } from "./Transaction.js";
-let balance = JSON.parse(localStorage.getItem("balance")) || 0;
-const transactions = JSON.parse(localStorage.getItem("transactions"), (key, value) => {
-    if (key === "date") {
-        return new Date(value);
+import { TypeTransaction } from "./Transaction";
+export class Account {
+    constructor(name) {
+        this.balance = JSON.parse(localStorage.getItem("balance")) || 0;
+        this.transactions = JSON.parse(localStorage.getItem("transactions"), (key, value) => {
+            if (key === "date") {
+                return new Date(value);
+            }
+            return value;
+        }) || [];
+        this.name = name;
     }
-    return value;
-}) || [];
-function debit(value) {
-    if (value <= 0) {
-        throw new Error("Valor a ser debitado deve ser maior que zero!");
+    static transactionRegistry(newTransaction) {
+        throw new Error("Method not implemented.");
     }
-    if (value > balance) {
-        throw new Error("Saldo insuficiente!");
+    static getBalance() {
+        throw new Error("Method not implemented.");
     }
-    balance -= value;
-    localStorage.setItem("balance", balance.toString());
-}
-function deposit(value) {
-    if (value <= 0) {
-        throw new Error("Valor a ser depositado deve ser menor que zero!");
+    static getAcessDate() {
+        throw new Error("Method not implemented.");
     }
-    balance += value;
-    localStorage.setItem("balance", balance.toString());
-}
-const Account = {
     getBalance() {
-        return balance;
-    },
+        return this.balance;
+    }
     getAcessDate() {
         return new Date();
-    },
+    }
     getTransactionsGroups() {
         const transactionsGroups = [];
-        const transactionsList = structuredClone(transactions);
+        const transactionsList = structuredClone(this.transactions);
         const orderedTransactions = transactionsList.sort((t1, t2) => t2.date.getTime() - t1.date.getTime());
         let actualLabelGroupTransaction = "";
         for (let transaction of orderedTransactions) {
@@ -41,26 +36,47 @@ const Account = {
                 actualLabelGroupTransaction = labelGroupTransaction;
                 transactionsGroups.push({
                     label: labelGroupTransaction,
-                    transactions: []
+                    transactions: [],
                 });
             }
             transactionsGroups.at(-1).transactions.push(transaction);
             return transactionsGroups;
         }
-    },
+    }
     transactionRegistry(newTransaction) {
         if (newTransaction.typeTransaction === TypeTransaction.DEPOSIT) {
-            deposit(newTransaction.value);
+            this.deposit(newTransaction.value);
         }
-        else if (newTransaction.typeTransaction === TypeTransaction.TRANSFER || newTransaction.typeTransaction === TypeTransaction.PAYMENT_BOLETO) {
-            debit(newTransaction.value);
+        else if (newTransaction.typeTransaction === TypeTransaction.TRANSFER ||
+            newTransaction.typeTransaction === TypeTransaction.PAYMENT_BOLETO) {
+            this.debit(newTransaction.value);
             newTransaction.value *= 0;
         }
         else {
             throw new Error("Tipo de Transação é inválido!");
         }
-        transactions.push(newTransaction);
-        localStorage.setItem("transactions", JSON.stringify(transactions));
+        this.transactions.push(newTransaction);
+        localStorage.setItem("transactions", JSON.stringify(this.transactions));
     }
-};
+    debit(value) {
+        if (value <= 0) {
+            throw new Error("Valor a ser debitado deve ser maior que zero!");
+        }
+        if (value > this.balance) {
+            throw new Error("Saldo insuficiente!");
+        }
+        this.balance -= value;
+        localStorage.setItem("balance", this.balance.toString());
+    }
+    deposit(value) {
+        if (value <= 0) {
+            throw new Error("Valor a ser depositado deve ser menor que zero!");
+        }
+        this.balance += value;
+        localStorage.setItem("balance", this.balance.toString());
+    }
+}
 export default Account;
+export function getTransactionsGroups() {
+    throw new Error("Function not implemented.");
+}

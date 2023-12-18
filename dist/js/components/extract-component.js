@@ -1,4 +1,4 @@
-import Account from "../types/Account.js";
+import * as Account from "../types/Account.js";
 import { DateFormat } from "../types/FormatDate.js";
 import { coinFormat, dateFormat } from "../utils/formatters.js";
 const registryTransactionsExtractElement = document.querySelector(".extrato .registro-transacoes");
@@ -37,6 +37,6 @@ function extractRenderize() {
 const ExtractComponent = {
     update() {
         extractRenderize();
-    }
+    },
 };
 export default ExtractComponent;
