@@ -1,14 +1,22 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { TypeTransaction } from "./Transaction.js";
 import { Storage } from "./Storage.js";
+import { DebitValidation, DepositValidation } from "./Decorators.js";
 export class Account {
+    name;
+    balance = Storage.get("balance") || 0;
+    transactions = Storage.get("transactions", (key, value) => {
+        if (key === "date") {
+            return new Date(value);
+        }
+        return value;
+    }) || [];
     constructor(name) {
-        this.balance = Storage.get("balance") || 0;
-        this.transactions = Storage.get("transactions", (key, value) => {
-            if (key === "date") {
-                return new Date(value);
-            }
-            return value;
-        }) || [];
         this.name = name;
     }
     getOwner() {
@@ -54,22 +62,28 @@ export class Account {
         Storage.save("transactions", JSON.stringify(this.transactions));
     }
     debit(value) {
-        if (value <= 0) {
-            throw new Error("Valor a ser debitado deve ser maior que zero!");
-        }
-        if (value > this.balance) {
-            throw new Error("Saldo insuficiente!");
-        }
         this.balance -= value;
         Storage.save("balance", this.balance.toString());
     }
     deposit(value) {
-        if (value <= 0) {
-            throw new Error("Valor a ser depositado deve ser menor que zero!");
-        }
         this.balance += value;
         Storage.save("balance", this.balance.toString());
     }
 }
+__decorate([
+    DebitValidation
+], Account.prototype, "debit", null);
+__decorate([
+    DepositValidation
+], Account.prototype, "deposit", null);
+export class PremiumAccount extends Account {
+    transactionRegistry(transaction) {
+        if (transaction.typeTransaction === TypeTransaction.DEPOSIT) {
+            transaction.value += 0.5;
+        }
+        super.transactionRegistry(transaction);
+    }
+}
 const UserAccount = new Account("Victor");
+const UserPremiumAccount = new PremiumAccount("Victor Santos");
 export default UserAccount;
