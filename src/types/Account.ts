@@ -2,6 +2,7 @@ import { TypeTransaction } from "./Transaction.js";
 import { TransactionGroup } from "./TransactionGroup.js";
 import { Transaction } from "./TypeTransaction.js";
 import { Storage } from "./Storage.js";
+import { DebitValidation, DepositValidation } from "./Decorators.js";
 
 export class Account {
   protected name: string;
@@ -73,27 +74,28 @@ export class Account {
     Storage.save("transactions", JSON.stringify(this.transactions));
   }
 
+  @DebitValidation
   debit(value: number): void {
-    if (value <= 0) {
-      throw new Error("Valor a ser debitado deve ser maior que zero!");
-    }
-    if (value > this.balance) {
-      throw new Error("Saldo insuficiente!");
-    }
-
     this.balance -= value;
     Storage.save("balance", this.balance.toString());
   }
 
+  @DepositValidation
   deposit(value: number): void {
-    if (value <= 0) {
-      throw new Error("Valor a ser depositado deve ser menor que zero!");
-    }
-
     this.balance += value;
     Storage.save("balance", this.balance.toString());
   }
 }
 
+export class PremiumAccount extends Account {
+  transactionRegistry(transaction: Transaction): void {
+    if (transaction.typeTransaction === TypeTransaction.DEPOSIT) {
+      transaction.value += 0.5;
+    }
+    super.transactionRegistry(transaction);
+  }
+}
+
 const UserAccount = new Account("Victor");
+const UserPremiumAccount = new PremiumAccount("Victor Santos");
 export default UserAccount;
